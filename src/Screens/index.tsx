@@ -1,16 +1,29 @@
 import { useState } from "react";
-import { Alert, Text, View, TextInput, Pressable, Image } from "react-native";
+import { Alert, Text, View, TextInput, Pressable, Image, ScrollView } from "react-native";
 import { Card } from "../components/listCard";
 import { stylesMain, stylesSearchBar, stylesList } from "../styles/stylesMain";
+import * as Progress from "react-native-progress"
+import vars from "../styles/styleVars";
 
 export function Index() {
 
   const [techDesc, setTechDesc] = useState('');
   const [techs, setTech] = useState([] as string[]);
+  const [checked, setChecked] = useState([] as string[])
   const [created, setCreated] = useState(0);
   const [done, setDone] = useState(0);
 
   const [isFocused, setIsFocused] = useState(false);
+
+  function checkItem(desc: string) {
+    if (checked.includes(desc)) {
+      setChecked(checked.filter(Tech => Tech !== desc));
+      setDone(done - 1);
+    } else {
+      setChecked([...checked, desc]);
+      setDone(done + 1);
+    }
+  }
 
   function addTechnology() {
     if (techDesc === '') Alert.alert('Error', 'Digite a descrição da tecnologia!');
@@ -36,7 +49,7 @@ export function Index() {
   }
 
   return (
-    <View style={stylesMain.container}>
+    <ScrollView style={stylesMain.container}>
 
       <Text style={stylesMain.title}>Minhas tecnologias</Text>
 
@@ -44,6 +57,7 @@ export function Index() {
         <TextInput
           style={[stylesSearchBar.searchBarInput, isFocused && stylesSearchBar.searchBarInputFocused]}
           placeholder="Adicione uma tecnologia"
+          placeholderTextColor={vars.textLight}
           onChangeText={text => setTechDesc(text)}
           value={techDesc}
           onFocus={() => setIsFocused(true)}
@@ -57,29 +71,40 @@ export function Index() {
       <View style={stylesList.listContainer}>
 
         <View style={stylesList.listCounter}>
-          <View>
-            <Text style={stylesList.counterCreatedText}>Criadas</Text>
-            <Text>{created}</Text>
+          <View style={stylesList.counterContainer}>
+            <Text style={stylesList.counterCreatedText}>Criadas:</Text>
+            <Text style={stylesList.counterNum}>{created}</Text>
           </View>
-          <View>
-            <Text style={stylesList.counterDoneText}>Concluídas</Text>
-            <Text>{done}</Text>
+          <View style={stylesList.counterContainer}>
+            <Text style={stylesList.counterDoneText}>Concluídas:</Text>
+            <Text style={stylesList.counterNum}>{done}</Text>
           </View>
+        </View>
+
+        <View style={stylesList.progressBar}>
+          <Progress.Bar
+            progress={done !== 0 ? done / created : 0}
+            height={2}
+            width={null}
+            borderWidth={0}
+            color={vars.textPurple}
+            unfilledColor={created !== 0 ? vars.textBlue : vars.textLight}
+          />
         </View>
 
         <View style={stylesList.list}>
           {techs.length === 0 ? (
             <View>
-              <Text>Nenhuma tecnologia cadastrada...</Text>
+              <Text style={stylesList.noContentText}>Nenhuma tecnologia cadastrada...</Text>
             </View>
           ) : (
             techs.map(item => (
-              <Card key={item} desc={item} remove={() => removeTechnology(item)} />
+              <Card key={item} desc={item} isChecked={checked.includes(item)} check={() => checkItem(item)} remove={() => removeTechnology(item)} />
             ))
           )}
         </View>
 
       </View>
-    </View>
+    </ScrollView>
   );
 }
