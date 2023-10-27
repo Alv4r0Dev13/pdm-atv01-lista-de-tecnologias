@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image } from "react-native";
+import { View, Text, Pressable, Image, TouchableOpacity } from "react-native";
 
 import stylesCards from "../styles/stylesCards";
 import vars from "../styles/styleVars";
@@ -10,16 +10,16 @@ interface CardProps {
   remove: (desc: string) => void;
 }
 
-export function Card({ desc, isChecked, check, remove }: CardProps) {
+export default function Card({ desc, isChecked, check, remove }: CardProps) {
   return (
     <View style={stylesCards.cardContainer}>
       <Pressable onPress={() => check(desc)} style={[stylesCards.cardCheck, isChecked && { backgroundColor: vars.textMain }]}>
         <Text style={[stylesCards.cardCheckText, isChecked && { color: vars.bgMain }]}>{isChecked ? '✓' : ''}</Text>
       </Pressable>
       <Text style={[stylesCards.cardText, isChecked && stylesCards.cardTextChecked]}>{desc}</Text>
-      <Pressable onPress={() => remove(desc)} style={stylesCards.deleteBtn}>
+      <TouchableOpacity onPress={() => remove(desc)} style={stylesCards.deleteBtn}>
         <Image source={require('../assets/img/trash.png')} style={stylesCards.deleteBtnImg} />
-      </Pressable>
+      </TouchableOpacity>
     </View>
   )
 };
