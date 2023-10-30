@@ -30,8 +30,7 @@ export default function TechList({ techs, setTechs, checked, setChecked }: ListP
   }
 
   return (
-    <ScrollView>
-      <View style={stylesList.list}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={stylesList.list}>
         {techs.length === 0 ? (
           <View>
             <Text style={stylesList.noContentText}>Nenhuma tecnologia cadastrada...</Text>
@@ -41,7 +40,6 @@ export default function TechList({ techs, setTechs, checked, setChecked }: ListP
             <Card key={item} desc={item} isChecked={checked.includes(item)} check={() => checkItem(item)} remove={() => removeTechnology(item)} />
           ))
         )}
-      </View>
     </ScrollView>
   )
 }

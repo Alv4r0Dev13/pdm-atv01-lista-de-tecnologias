@@ -12,17 +12,18 @@ interface InfoProps {
 
 export default function ListInfo({ created, done }: InfoProps) {
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{marginBottom: 30}}>
       <View style={stylesInfo.listCounter}>
-        <View style={stylesInfo.counterContainer}>
-          <Text style={stylesInfo.counterCreatedText}>Criadas:</Text>
-          <Text style={stylesInfo.counterNum}>{created}</Text>
-        </View>
         <View style={stylesInfo.counterContainer}>
           <Text style={stylesInfo.counterDoneText}>Concluídas:</Text>
           <Text style={stylesInfo.counterNum}>{done}</Text>
         </View>
-      </View><View style={stylesInfo.progressBar}>
+        <View style={stylesInfo.counterContainer}>
+          <Text style={stylesInfo.counterCreatedText}>Criadas:</Text>
+          <Text style={stylesInfo.counterNum}>{created}</Text>
+        </View>
+      </View>
+      <View style={stylesInfo.progressBar}>
         <Progress.Bar
           progress={done !== 0 ? done / created : 0}
           height={2}

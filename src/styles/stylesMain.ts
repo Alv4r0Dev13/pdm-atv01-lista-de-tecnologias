@@ -9,12 +9,11 @@ const stylesMain = StyleSheet.create({
   },
   title: {
     color: vars.textBlue,
-    // fontFamily: 'Abel',
     fontSize: 30,
-    // fontWeight: 'bold',
+    fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 70,
-    marginBottom: 50,
+    marginBottom: 40,
     maxWidth: '100%'
   }
 });
